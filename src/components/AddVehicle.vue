@@ -1,14 +1,21 @@
 <template>
   <div>
-    <form @submit="addVehicle">
-      <select v-model="vehicle">
-        <option disabled value>Seleccione un elemento</option>
-        <option>Motorcycle</option>
-        <option>Sedan</option>
-        <option>Truck</option>
-      </select>
-      <input type="submit" value="Agregar Vehiculo" class="btn" />
-    </form>
+    <v-form ref="form">
+      <v-row>
+        <v-col cols="8">
+          <v-select
+            v-model="vehicle"
+            :items="items"
+            :rules="[v => !!v || 'Item is required']"
+            label="Vehicle"
+            required
+          ></v-select>
+        </v-col>
+        <v-col cols="4">
+          <v-btn :disabled="!valid" @click="validate" class="mr-4">Agregar Vehiculo</v-btn>
+        </v-col>
+      </v-row>
+    </v-form>
   </div>
 </template>
 
@@ -18,12 +25,22 @@ export default {
   name: "AddTodo",
   data() {
     return {
-      vehicle: ''
+      valid: true,
+      vehicle: null,
+      items: [
+        'Motorcycle',
+        'Sedan',
+        'Truck'
+      ],
     }
   },
   methods: {
-    addVehicle(e) {
-      e.preventDefault();
+    validate() {
+      if (this.$refs.form.validate()) {
+        this.addVehicle();
+      }
+    },
+    addVehicle() {
       const newVehicle = {
         id: uuid(),
         type: this.vehicle

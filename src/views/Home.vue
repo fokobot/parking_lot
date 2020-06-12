@@ -1,9 +1,10 @@
 <template>
   <div class="home">
-    <AddVehicle v-on:add-vehicle="addVehicle" />
-    <!-- v-on:add-todo="addTodo" -->
-    <ParkingSpaceList v-bind:parkingspaces="parkingspaces" v-on:free-up="freeUpParking" />
-    <VehicleWaitingList v-bind:vehicleswaiting="vehicleswaiting" />
+    <v-container>
+      <AddVehicle v-on:add-vehicle="addVehicle" />
+      <VehicleWaitingList v-bind:vehicleswaiting="vehicleswaiting" />
+      <ParkingSpaceList v-bind:parkingspaces="parkingspaces" v-on:free-up="freeUpParking" />
+    </v-container>
   </div>
 </template>
 

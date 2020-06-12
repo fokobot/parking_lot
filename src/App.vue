@@ -1,40 +1,36 @@
 <template>
-  <div id="app">
-    <Header />
-    <router-view />
-  </div>
+  <v-app>
+    <v-app-bar app color="primary" dark>
+      <div class="d-flex align-center">
+        <v-btn to="/" text>
+          <v-icon large>local_parking</v-icon>
+          <span class="mr-2">Parking Lot</span>
+        </v-btn>
+      </div>
+
+      <v-spacer></v-spacer>
+
+      <v-btn to="/about" text>
+        <span class="mr-2">About</span>
+      </v-btn>
+    </v-app-bar>
+
+    <v-content>
+      <router-view />
+    </v-content>
+  </v-app>
 </template>
 
 <script>
-import Header from './components/layout/Header'
 
 export default {
   name: 'App',
+
   components: {
-    Header
-  }
-}
+  },
+
+  data: () => ({
+    //
+  }),
+};
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
