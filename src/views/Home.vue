@@ -68,6 +68,11 @@ export default {
           id: 8,
           type: size.SMALL,
           status: false
+        },
+        {
+          id: 9,
+          type: size.MEDIUM,
+          status: false
         }
       ],
       vehicleswaiting: [

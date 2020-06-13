@@ -14,16 +14,15 @@
 
         <v-card-actions>
           <v-list-item class="grow">
-            <v-row>
-              <v-btn
-                @click="$emit('free-up',parkingspace.id)"
-                :disabled="!parkingspace.status"
-                color="primary"
-              >Free Up Parking Space</v-btn>
-            </v-row>
+            <v-btn
+              class="col-8"
+              @click="$emit('free-up',parkingspace.id)"
+              :disabled="!parkingspace.status"
+              color="primary"
+            >Free Up Parking Space</v-btn>
             <v-row align="center" justify="end">
               <div>
-                <v-icon class="mr-1">directions_bike</v-icon>
+                <v-icon class="mr-1">two_wheeler</v-icon>
                 <span class="mr-1"></span>
               </div>
               <div v-if="parkingspace.type === 'Large' || parkingspace.type === 'Medium'">
