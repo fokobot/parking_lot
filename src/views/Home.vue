@@ -71,7 +71,9 @@ export default {
         }
       ],
       vehicleswaiting: [
-      ]
+      ],
+      smallspaces: 0,
+      mediumspaces: 0
     }
   },
   methods: {
@@ -81,48 +83,84 @@ export default {
     freeUpParking(id) {
       let index = this.parkingspaces.findIndex(parkingspace => parkingspace.id === id);
       this.parkingspaces[index].status = false;
+      this.updateSpaces(this.parkingspaces[index].type);
       return this.vehicleswaiting.some(vehicle => {
         if (this.canIPark(vehicle.type)) {
           this.vehicleswaiting = this.vehicleswaiting.filter(waiting => waiting.id !== vehicle.id);
           return true;
-        } else {
-          return false;
         }
+        return false;
       })
     },
     canIParkHere(vehicleType, parkingspace) {
-      switch (vehicleType) {
-        case 'Motorcycle':
-          if (!parkingspace.status) {
-            parkingspace.status = true;
-            return true;
-          } else {
-            return false;
-          }
-        case 'Sedan':
-          if (!parkingspace.status && parkingspace.type !== size.SMALL) {
-            parkingspace.status = true;
-            return true;
-          } else {
-            return false;
-          }
-        case 'Truck':
-          if (!parkingspace.status && parkingspace.type !== size.SMALL && parkingspace.type !== size.MEDIUM) {
-            parkingspace.status = true;
-            return true;
-          } else {
-            return false;
-          }
-        default:
-          console.log('Vehicle type doesn\'t exist');
-          return false;
+      let canPark = false;
+      if (!parkingspace.status) {
+        switch (vehicleType) {
+          case 'Motorcycle':
+            if (this.smallspaces > 0) {
+              if (parkingspace.type === size.SMALL) {
+                canPark = true;
+                this.smallspaces--;
+              }
+            } else {
+              if (this.mediumspaces > 0) {
+                if (parkingspace.type === size.MEDIUM) {
+                  canPark = true;
+                  this.mediumspaces--;
+                }
+              } else {
+                canPark = true;
+              }
+            }
+            break;
+          case 'Sedan':
+            if (parkingspace.type !== size.SMALL) {
+              if (this.mediumspaces > 0) {
+                if (parkingspace.type === size.MEDIUM) {
+                  canPark = true;
+                  this.mediumspaces--;
+                }
+              } else {
+                canPark = true;
+              }
+            }
+            break;
+          case 'Truck':
+            if (parkingspace.type === size.LARGE) {
+              canPark = true;
+            }
+            break;
+          default:
+            console.log('Vehicle type doesn\'t exist');
+            break;
+        }
       }
+      if (canPark) {
+        parkingspace.status = true;
+      }
+      return canPark;
     },
     canIPark(vehicleType) {
       return this.parkingspaces.some(parkingspace => {
         if (this.canIParkHere(vehicleType, parkingspace)) return true;
       });
+    },
+    updateSpaces(type) {
+      switch (type) {
+        case 'Small':
+          this.smallspaces++;
+          break;
+        case 'Medium':
+          this.mediumspaces++;
+          break;
+      }
     }
+  },
+  created() {
+    this.parkingspaces.forEach(parkingspace => {
+      this.updateSpaces(parkingspace.type);
+    })
+
   }
 }
 </script>
